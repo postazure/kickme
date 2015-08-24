@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  slug: MyString
+  kickstarter_id: 1
+  avatar: MyString
+  url: MyString
+  bio: MyText
+  created_project_count: 1
+  kickstarter_created_at: MyString
+
+two:
+  name: MyString
+  slug: MyString
+  kickstarter_id: 1
+  avatar: MyString
+  url: MyString
+  bio: MyText
+  created_project_count: 1
+  kickstarter_created_at: MyString
