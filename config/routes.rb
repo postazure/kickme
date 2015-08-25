@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'project_creators#index'
   resources :project_creators
+  post 'project_creators/search' => 'project_creators#search'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

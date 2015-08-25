@@ -1,0 +1,45 @@
+{
+  "id": 1134494596,
+  "name": "CoolMiniOrNot",
+  "slug": "coolminiornot",
+  "avatar": {
+    "thumb": "https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=40&h=40&fit=crop&auto=format&q=92&s=2562684fed6468a3294d7ba241658af3",
+    "small": "https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=80&h=80&fit=crop&auto=format&q=92&s=0c4874ba952f7b79025eb92d297c85d9",
+    "medium": "https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0",
+    "large": "https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=220&h=220&fit=crop&auto=format&q=92&s=e7acea2ac2f7efdfcc1b6652eb50f5ce"
+  },
+  "urls": {
+    "web": {
+      "user": "https://www.kickstarter.com/profile/coolminiornot"
+    },
+    "api": {
+      "user": "https://api.kickstarter.com/v1/users/1134494596?signature=1440596116.4a1058214fbacf8eec787edaeea9a646d1f5a351",
+      "created_projects": "https://api.kickstarter.com/v1/users/1134494596/projects/created?signature=1440596116.d8fc4def3436c52d02b653bec97e077077dd0747"
+    }
+  },
+  "location": {
+    "id": 2357024,
+    "name": "Atlanta",
+    "slug": "atlanta-ga",
+    "short_name": "Atlanta, GA",
+    "displayable_name": "Atlanta, GA",
+    "country": "US",
+    "state": "GA",
+    "type": "Town",
+    "is_root": false,
+    "urls": {
+      "web": {
+        "discover": "https://www.kickstarter.com/discover/places/atlanta-ga",
+        "location": "https://www.kickstarter.com/locations/atlanta-ga"
+      },
+      "api": {
+        "nearby_projects": "https://api.kickstarter.com/v1/discover?signature=1440594929.08e581f18c92cb33fedf9bebefa5a4c41a189e88&woe_id=2357024"
+      }
+    }
+  },
+  "biography": "CoolMiniOrNot is both a studio and publisher of great tabletop games like Zombicide, Dark Age, Wrath of Kings, Rivet Wars, Kaosball, Dogs of War, Arcadia Quest, Xenoshyft and more! We work closely with game creators and indie studios to realize their vision, with a revenue sharing philosophy that is unprecedented in the industry.",
+  "backed_projects_count": 39,
+  "created_projects_count": 18,
+  "updated_at": 1440426139,
+  "created_at": 1332874154
+}
