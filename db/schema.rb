@@ -13,12 +13,16 @@
 
 ActiveRecord::Schema.define(version: 20150824172506) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "project_creators", force: :cascade do |t|
     t.string   "name"
     t.string   "slug"
     t.integer  "kickstarter_id"
     t.string   "avatar"
-    t.string   "url"
+    t.string   "url_web"
+    t.string   "url_api"
     t.text     "bio"
     t.integer  "created_project_count"
     t.string   "kickstarter_created_at"

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root 'follow#index'
-  resources :follow
+  root 'project_creators#index'
+  resources :project_creators
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

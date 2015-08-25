@@ -1,4 +1,4 @@
-class FollowController < ApplicationController
+class ProjectCreatorsController < ApplicationController
   def index
     @creators = ProjectCreator.all
   end
