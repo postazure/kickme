@@ -18,8 +18,16 @@ describe ProjectCreatorsController do
       expect_any_instance_of(KickstarterApiClient)
           .to receive(:search_project_creators_by_name).with('CoolMiniOrNot') {
                 [
-                    { name: 'CoolMiniOrNot', profile_url: 'https://api.kickstarter.com/v1/users/1134494596?signature=1440624969.b121fb3fa5339e28ecb0644375a468a6e9990342' },
-                    { name: 'Michael Mindes', profile_url: 'https://api.kickstarter.com/v1/users/121620721?signature=1440625531.db17631ecab6ee8fde821616f3c7cb0c1c42b85f'}
+                    {
+                        name: 'CoolMiniOrNot',
+                        profile_url: 'https://profile.com/coolminiornot',
+                        profile_avatar: 'https://avatar.com/coolminiornot'
+                    },
+                    {
+                        name: 'Michael Mindes',
+                        profile_url: 'https://profile.com/michaelmindes',
+                        profile_avatar: 'https://avatar.com/michaelmindes'
+                    },
                 ]
               }
     end
@@ -29,8 +37,17 @@ describe ProjectCreatorsController do
       results = JSON.parse(response.body)
       expect(results).to match_array(
         [
-            { "name" => 'CoolMiniOrNot', "profile_url" => 'https://api.kickstarter.com/v1/users/1134494596?signature=1440624969.b121fb3fa5339e28ecb0644375a468a6e9990342' },
-            { "name" => 'Michael Mindes', "profile_url" => 'https://api.kickstarter.com/v1/users/121620721?signature=1440625531.db17631ecab6ee8fde821616f3c7cb0c1c42b85f'}
+            {
+                "name" => 'CoolMiniOrNot',
+                "profile_url" => 'https://profile.com/coolminiornot',
+                "profile_avatar" => 'https://avatar.com/coolminiornot'
+            },
+            {
+                "name" => 'Michael Mindes',
+                "profile_url" => 'https://profile.com/michaelmindes',
+                "profile_avatar" => 'https://avatar.com/michaelmindes'
+
+            }
         ]
       )
     end

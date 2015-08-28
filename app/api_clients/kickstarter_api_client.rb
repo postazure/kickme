@@ -10,7 +10,8 @@ class KickstarterApiClient
       creators.push(
         {
           name: project['creator']['name'],
-          profile_url: project['creator']['urls']['api']['user']
+          profile_url: project['creator']['urls']['api']['user'],
+          profile_avatar: project['creator']['avatar']['medium']
         }
       )
     end

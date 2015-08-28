@@ -1,4 +1,6 @@
 class ProjectCreatorsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     @creators = ProjectCreator.all
   end
