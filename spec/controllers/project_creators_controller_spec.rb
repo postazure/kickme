@@ -7,7 +7,7 @@ describe ProjectCreatorsController do
 
   describe '#index' do
     before do
-      allow_any_instance_of(KickstarterApiClient).to receive(:get_creator_info_from_url).and_return({slug: 'slug'})
+      using_project_creator_factory
       FactoryGirl.create(:project_creator, name: 'CoolMiniOrNot')
       FactoryGirl.create(:project_creator, name: 'TMGgames')
     end

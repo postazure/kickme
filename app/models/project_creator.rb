@@ -17,6 +17,7 @@
 #
 
 class ProjectCreator < ActiveRecord::Base
+  has_and_belongs_to_many :users
   before_save :get_additional_profile_info
 
   def get_additional_profile_info

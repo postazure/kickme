@@ -1,6 +1,25 @@
 require 'rails_helper'
 
 describe ProjectCreator do
+  describe 'relationships' do
+    let( :user ) { FactoryGirl.create(:user) }
+    let( :project_creator ) { FactoryGirl.create(:project_creator) }
+
+    before do
+      using_project_creator_factory
+      project_creator
+    end
+
+    it 'users can follow many project_creators' do
+      test_actions = lambda {
+        project_creator.users << user
+      }
+
+      expect(test_actions).to change{user.project_creators.count}.from(0).to(1)
+    end
+  end
+
+
   describe '#get_additional_profile_info' do
     let( :profile_url ) { 'https://api.kickstarter.com/v1/users/1134494596?signature=1440596116.4a1058214fbacf8eec787edaeea9a646d1f5a351' }
     before do
