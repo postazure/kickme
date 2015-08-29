@@ -6,6 +6,11 @@ class UsersController < ApplicationController
     render json: { follow: true }
   end
 
+  def unfollow
+    user.project_creators.delete(project_creator)
+    render json: { unfollow: true}
+  end
+
   private
 
   def user
