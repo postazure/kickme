@@ -4,6 +4,7 @@ describe ProjectCreatorsController do
   let(:headers) { nil }
   let(:slug)    { 'coolminiornot'}
   let(:last_year) {1.year.ago.in_time_zone('Pacific Time (US & Canada)') }
+  let( :user ) { FactoryGirl.create(:user) }
 
   describe '#index' do
     before do
@@ -13,7 +14,10 @@ describe ProjectCreatorsController do
     end
 
     it 'should return all project creators from db' do
-      expect(subject.index).to match_array(ProjectCreator.all)
+      response = get :index
+      response_body = JSON.parse(response.body)
+
+      expect(response_body.map {|c| c['name']}).to match_array([ 'CoolMiniOrNot', 'TMGgames' ])
     end
   end
 
@@ -37,7 +41,7 @@ describe ProjectCreatorsController do
     end
 
     it 'should return a collection of creator names and api endpoints' do
-      post :search, { 'search_name' => 'CoolMiniOrNot' }, headers
+      post :search, { 'search_name' => 'CoolMiniOrNot' }
       results = JSON.parse(response.body)
       expect(results).to match_array(
         [
@@ -76,25 +80,40 @@ describe ProjectCreatorsController do
       stub_request( :get, profile_url ).to_return( body: fixture('kickstarter/creator_lookup/coolminiornot.json'))
     end
 
-    it 'creates a creator with project search information' do
-      test_actions = lambda { post :create, profile_data_from_project_search, headers }
+    context 'a user is logged in' do
+      let( :auth_token ) { user.token }
 
-      expect(test_actions).to change{ProjectCreator.count}.from(0).to(1)
+      it 'creates a creator with project search information' do
+        test_actions = lambda { post :create, profile_data_from_project_search.merge( token: auth_token) }
 
-      project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
-      expected_attributes =  profile_data_from_project_search[:project_creator]
-      ['name', 'slug', 'kickstarter_id', 'avatar', 'url_web', 'url_api'].each do |attr|
-        expect(expected_attributes.values).to include(project_creator[attr])
+        expect(test_actions).to change{ProjectCreator.count}.from(0).to(1)
+
+        project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
+        expected_attributes =  profile_data_from_project_search[:project_creator]
+        ['name', 'slug', 'kickstarter_id', 'avatar', 'url_web', 'url_api'].each do |attr|
+          expect(expected_attributes.values).to include(project_creator[attr])
+        end
+      end
+
+      it 'adds profile information to db creators' do
+        post :create, profile_data_from_project_search.merge( token: auth_token)
+
+        project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
+        expect(project_creator.bio).not_to be_nil
+        expect(project_creator.created_project_count).not_to be_nil
+        expect(project_creator.kickstarter_created_at).not_to be_nil
       end
     end
 
-    it 'adds profile information to db creators' do
-      post :create, profile_data_from_project_search, headers
+    context 'a user is NOT logged in' do
+      it 'should require a user to be logged in' do
+        starting_project_creator_count = ProjectCreator.count
+        response = post :create, profile_data_from_project_search
+        response_body = JSON.parse(response.body)
 
-      project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
-      expected_attributes =  profile_data_from_project_search[:project_creator]
-      ['bio', 'created_project_count', 'kickstarter_created_at'].each do |attr|
-        expect(expected_attributes.values).not_to be_nil
+        expect(ProjectCreator.count).to eq starting_project_creator_count
+        expect(response_body.keys).to include( 'auth', 'message')
+        expect(response.status).to eq 401
       end
     end
   end

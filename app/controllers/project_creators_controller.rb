@@ -1,15 +1,12 @@
 class ProjectCreatorsController < ApplicationController
+  before_action :authenticate_user_token, only: [:create]
 
   def index
-    @creators = ProjectCreator.all
-  end
-
-  def new
-    @creator = ProjectCreator.new
+    render json: ProjectCreator.all
   end
 
   def create
-    project_creator = ProjectCreator.create(project_creator_params)
+    ProjectCreator.create(project_creator_params)
     render :index
   end
 
