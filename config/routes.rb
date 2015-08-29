@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   post 'project_creators/search' => 'project_creators#search'
 
   post 'registrations' => 'registrations#create'
+  post 'login' => 'auth#create'
+  delete 'logout' => 'auth#destroy'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
