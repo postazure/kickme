@@ -12,7 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'pg'
 gem 'httparty'
-gem 'annotate', '~> 2.6.6'
+gem 'has_secure_token'
 
 group :development, :test do
   gem 'byebug'
@@ -23,6 +23,7 @@ group :development do
   gem 'quiet_assets'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'annotate', '~> 2.6.6'
 end
 
 group :test do
