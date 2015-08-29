@@ -20,7 +20,7 @@ class ProjectCreator < ActiveRecord::Base
   before_save :get_additional_profile_info
 
   def get_additional_profile_info
-    additional_attr_hash = kickstarter_api_client.get_creator_info_from_url(url_web)
+    additional_attr_hash = kickstarter_api_client.get_creator_info_from_url(url_api)
     self.assign_attributes(additional_attr_hash)
 
     return true # Must return truthy to allow save.

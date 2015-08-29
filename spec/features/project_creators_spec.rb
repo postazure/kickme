@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Project Creators' do
+xdescribe 'Project Creators' do
   describe 'View all creators' do
     let!(:creator) { FactoryGirl.create(:project_creator) }
 
