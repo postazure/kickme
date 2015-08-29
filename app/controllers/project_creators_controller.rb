@@ -10,7 +10,8 @@ class ProjectCreatorsController < ApplicationController
   end
 
   def create
-    ProjectCreator.create(project_creator_params)
+    project_creator = ProjectCreator.create(project_creator_params)
+
     render :index
   end
 
@@ -23,6 +24,8 @@ class ProjectCreatorsController < ApplicationController
   private
 
   def project_creator_params
-    params.require(:project_creator).permit(:slug)
+    params.require(:project_creator).permit(
+        :name, :slug, :kickstarter_id, :avatar, :url_web, :url_api
+    )
   end
 end

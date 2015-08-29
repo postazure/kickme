@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ProjectCreatorsController do
   let(:headers) { nil }
   let(:slug)    { 'coolminiornot'}
+  let(:last_year) {1.year.ago.in_time_zone('Pacific Time (US & Canada)') }
 
   describe '#index' do
     let!(:coolminiornot) { FactoryGirl.create(:project_creator, name: 'CoolMiniOrNot')}
@@ -53,39 +54,40 @@ describe ProjectCreatorsController do
     end
   end
 
-  xdescribe '#create' do
-    let(:form_data) { {'project_creator' => {'slug' => slug}} }
-    let(:last_year) {1.year.ago.in_time_zone('Pacific Time (US & Canada)') }
-
-    it 'should add project creators to db' do
-      test_actions = lambda { post :create, form_data, headers }
-
-      expect(test_actions).to change{ProjectCreator.count}.from(0).to(1)
-      expect(ProjectCreator.first.slug).to eq slug
+  describe '#create' do
+    let(:profile_data_from_project_search) do
+        {
+            project_creator: {
+                name: "CoolMiniOrNot",
+                slug: "coolminiornot",
+                kickstarter_id: 12345678,
+                avatar: "https://avatar.com/coolminiornot",
+                url_web: "https://web.com/coolminiornot",
+                url_api: "https://api.com/coolminiornot"
+            }
+        }
     end
 
-    it 'should save fields' do
-      kickstarter_id = 2423123
+    it 'creates a creator with project search information' do
+      test_actions = lambda { post :create, profile_data_from_project_search, headers }
 
-      project = {
-          name: 'CoolMiniOrNot',
-          slug: slug,
-          kickstarter_id: kickstarter_id,
-          avatar: 'avatar',
-          url_web: 'url_web',
-          url_api: "https://api.kickstarter.com/v1/users/#{kickstarter_id}?signature=1440596030.895c964b7ab965d781eeee1b61425bc6f933747a",
-          bio: 'About the company, stuff stuff stuff.',
-          created_project_count: 1,
-          kickstarter_created_at: last_year
-      }.with_indifferent_access
+      expect(test_actions).to change{ProjectCreator.count}.from(0).to(1)
 
-      post :create, form_data, headers
-      expect(ProjectCreator.count).to eq 1
+      project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
+      expected_attributes =  profile_data_from_project_search[:project_creator]
+      ['name', 'slug', 'kickstarter_id', 'avatar', 'url_web', 'url_api'].each do |attr|
+        expect(expected_attributes.values).to include(project_creator[attr])
+      end
+    end
 
-      creator = ProjectCreator.first
-      fields = %w[ name slug kickstarter_id avatar url_web url_api bio created_project_count kickstarter_created_at ]
-      fields.each do |attribute|
-        expect(creator.send(attribute)).to eq project[attribute]
+    it 'adds profile information to db creators' do
+      # API call to get profile page
+      post :create, profile_data_from_project_search, headers
+
+      project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
+      expected_attributes =  profile_data_from_project_search[:project_creator]
+      ['bio', 'created_project_count', 'kickstarter_created_at'].each do |attr|
+        expect(expected_attributes.values).to include(project_creator[attr])
       end
     end
   end
