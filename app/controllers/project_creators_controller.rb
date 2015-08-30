@@ -6,7 +6,10 @@ class ProjectCreatorsController < ApplicationController
   end
 
   def create
-    ProjectCreator.create(project_creator_params)
+    project_creator = ProjectCreator.new(project_creator_params)
+    project_creator.get_additional_profile_info
+    project_creator.save
+
     render :index
   end
 

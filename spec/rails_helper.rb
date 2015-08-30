@@ -51,8 +51,3 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 end
-
-
-def using_project_creator_factory
-  allow_any_instance_of(KickstarterApiClient).to receive(:get_creator_info_from_url).and_return({slug: 'slug'})
-end

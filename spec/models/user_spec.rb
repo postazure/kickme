@@ -5,11 +5,6 @@ describe User do
     let!( :user ) { FactoryGirl.create(:user) }
     let( :project_creator ) { FactoryGirl.create(:project_creator) }
 
-    before do
-      using_project_creator_factory
-      project_creator
-    end
-
     it 'users can follow many project_creators' do
       test_actions = lambda {
         user.project_creators << project_creator

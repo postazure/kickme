@@ -9,7 +9,7 @@ class CreateProjectCreators < ActiveRecord::Migration
       t.string :url_api
       t.text :bio
       t.integer :created_project_count
-      t.string :kickstarter_created_at
+      t.datetime :kickstarter_created_at
 
       t.timestamps null: false
     end

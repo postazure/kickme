@@ -8,7 +8,6 @@ describe ProjectCreatorsController do
 
   describe '#index' do
     before do
-      using_project_creator_factory
       FactoryGirl.create(:project_creator, name: 'CoolMiniOrNot')
       FactoryGirl.create(:project_creator, name: 'TMGgames')
     end

@@ -5,7 +5,7 @@ describe UsersController do
     it 'should require auth for the following actions' do
       require_auth(:follow)
       require_auth(:unfollow)
-      # require_auth(:project_creators) #show a list of all project creators you follow
+      require_auth(:project_creators) #show a list of all project creators you follow
     end
   end
 
@@ -19,10 +19,6 @@ describe UsersController do
     }
   end
 
-  before do
-    using_project_creator_factory
-    project_creator
-  end
 
   describe '#follow' do
     it 'should add a project creator to the user\'s watch list' do
@@ -53,6 +49,22 @@ describe UsersController do
 
       expect(user.project_creators.count).to eq 0
       expect(ProjectCreator.count).to eq 1
+    end
+  end
+
+  describe '#project_creators' do
+    before do
+      user.project_creators << project_creator
+      expect(user.project_creators.count).to eq 1
+    end
+
+    it 'should return a list of all project creators that this user follows' do
+      request.headers['user_auth_token'] = user.token
+      response = get :project_creators
+      response_body = JSON.parse(response.body)
+
+      expect(response.status).to eq 200
+      expect(response_body).to eq( [project_creator.as_json] )
     end
   end
 end
