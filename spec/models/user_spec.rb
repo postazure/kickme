@@ -18,4 +18,12 @@ describe User do
       expect(test_actions).to change{user.project_creators.count}.from(0).to(1)
     end
   end
+
+  describe 'encrypt password' do
+    let!( :user ) {User.create(email: 'foo@bar.com', password: 'password', password_confirmation: 'password')}
+
+    it 'should not store raw passwords' do
+      expect(user.password_digest).not_to eq 'password'
+    end
+  end
 end

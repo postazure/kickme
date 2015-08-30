@@ -13,6 +13,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'pg'
 gem 'httparty'
 gem 'has_secure_token'
+gem 'bcrypt-ruby'
 
 group :development, :test do
   gem 'byebug'

@@ -8,8 +8,9 @@ Rails.application.routes.draw do
   post 'login' => 'auth#create'
   delete 'logout' => 'auth#destroy'
 
-  post 'follow' => 'users#follow'
-  post 'unfollow' => 'users#unfollow'
+  post 'user/follow' => 'users#follow'
+  post 'user/unfollow' => 'users#unfollow'
+  get 'user/project_creators' => 'users#project_creators'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -23,7 +23,7 @@ class AuthController < ApplicationController
   private
 
   def authenticated_user?(db_user)
-    db_user.password == params['password']
+    db_user.authenticate(params[:password])
   rescue
     false
   end

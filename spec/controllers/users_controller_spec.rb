@@ -5,6 +5,7 @@ describe UsersController do
     it 'should require auth for the following actions' do
       require_auth(:follow)
       require_auth(:unfollow)
+      # require_auth(:project_creators) #show a list of all project creators you follow
     end
   end
 

@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe AuthController do
   describe '#create' do
-    let!( :existing_user ) { FactoryGirl.create(:user, email: 'fake@email.com', password: 'password') }
+    let!( :existing_user ) { FactoryGirl.create(:user, email: 'fake@email.com') }
     context 'valid login credentials are provided' do
       let( :payload ) do
         {
-            'email' => 'fake@email.com', 'password' => 'password'
+            email: 'fake@email.com', password: 'password'
         }
       end
       
