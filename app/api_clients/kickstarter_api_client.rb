@@ -10,6 +10,7 @@ class KickstarterApiClient
       creators.push(
         {
           name: project['creator']['name'],
+          kickstarter_id: project['creator']['id'],
           profile_url: project['creator']['urls']['api']['user'],
           profile_avatar: project['creator']['avatar']['medium']
         }
@@ -25,6 +26,12 @@ class KickstarterApiClient
     translated_date = Date.strptime(seconds_since_epoch,'%s').to_s
 
     {
+        name: project_creator['name'],
+        slug: project_creator['slug'],
+        kickstarter_id: project_creator['id'],
+        avatar: project_creator['avatar']['medium'],
+        url_web: project_creator['urls']['web']['user'],
+        url_api: project_creator['urls']['api']['user'],
         bio: project_creator['biography'],
         created_project_count: project_creator['created_projects_count'],
         kickstarter_created_at: translated_date

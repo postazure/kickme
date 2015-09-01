@@ -20,11 +20,6 @@ class ProjectCreator < ActiveRecord::Base
   has_and_belongs_to_many :users
 
 
-  def get_additional_profile_info
-    additional_attr_hash = kickstarter_api_client.get_creator_info_from_url(url_api)
-    self.assign_attributes(additional_attr_hash)
-  end
-
   def kickstarter_api_client
     @kickstater_api_client ||= KickstarterApiClient.new
   end

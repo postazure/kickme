@@ -6,24 +6,23 @@ class ProjectCreatorsController < ApplicationController
   end
 
   def create
-    project_creator = ProjectCreator.new(project_creator_params)
-    project_creator.get_additional_profile_info
-    project_creator.save
-
+    ProjectCreator.create!(project_creator_params)
     render :index
   end
 
   def search
-    results = KickstarterApiClient.new
-      .search_project_creators_by_name(params['search_name'])
+    results = client.search_project_creators_by_name(params['search_name'])
     render json: results
   end
 
   private
 
   def project_creator_params
-    params.require(:project_creator).permit(
-        :name, :slug, :kickstarter_id, :avatar, :url_web, :url_api
-    )
+    profile_url = params['project_creator']['url_api']
+    client.get_creator_info_from_url(profile_url)
+  end
+
+  def client
+    @client ||= KickstarterApiClient.new
   end
 end

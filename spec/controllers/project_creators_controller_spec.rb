@@ -27,11 +27,13 @@ describe ProjectCreatorsController do
           [
               {
                   name: 'CoolMiniOrNot',
+                  kickstarter_id: 123456,
                   profile_url: 'https://profile.com/coolminiornot',
                   profile_avatar: 'https://avatar.com/coolminiornot'
               },
               {
                   name: 'Michael Mindes',
+                  kickstarter_id: 654321,
                   profile_url: 'https://profile.com/michaelmindes',
                   profile_avatar: 'https://avatar.com/michaelmindes'
               },
@@ -45,14 +47,16 @@ describe ProjectCreatorsController do
       expect(results).to match_array(
         [
           {
-              "name" => 'CoolMiniOrNot',
-              "profile_url" => 'https://profile.com/coolminiornot',
-              "profile_avatar" => 'https://avatar.com/coolminiornot'
+              'name' => 'CoolMiniOrNot',
+              'kickstarter_id' => 123456,
+              'profile_url' => 'https://profile.com/coolminiornot',
+              'profile_avatar' => 'https://avatar.com/coolminiornot'
           },
           {
-              "name" => 'Michael Mindes',
-              "profile_url" => 'https://profile.com/michaelmindes',
-              "profile_avatar" => 'https://avatar.com/michaelmindes'
+              'name' => 'Michael Mindes',
+              'kickstarter_id' => 654321,
+              'profile_url' => 'https://profile.com/michaelmindes',
+              'profile_avatar' => 'https://avatar.com/michaelmindes'
 
           }
         ]
@@ -62,14 +66,13 @@ describe ProjectCreatorsController do
 
   describe '#create' do
     let( :profile_url ) { 'https://api.kickstarter.com/v1/users/1134494596?signature=1440624969.b121fb3fa5339e28ecb0644375a468a6e9990342' }
-    let( :profile_data_from_project_search) do
+    let( :kickstarter_id ) { 1134494596 }
+    let( :hash_from_web_client) do
         {
             project_creator: {
-                name: "CoolMiniOrNot",
-                slug: "coolminiornot",
-                kickstarter_id: 12345678,
-                avatar: "https://avatar.com/coolminiornot",
-                url_web: "https://web.com/coolminiornot",
+                name: 'CoolMiniOrNot',
+                kickstarter_id: kickstarter_id,
+                profile_avatar: 'https://avatar.com/coolminiornot',
                 url_api: profile_url
             }
         }
@@ -82,32 +85,22 @@ describe ProjectCreatorsController do
     context 'a user is logged in' do
       let( :auth_token ) { user.token }
 
-      it 'creates a creator with project search information' do
-        test_actions = lambda { post :create, profile_data_from_project_search.merge( token: auth_token) }
+      it 'creates a project creator with profile information' do
+        expected_attributes = %w[ name slug kickstarter_id avatar url_web url_api bio created_project_count kickstarter_created_at ]
+        post :create, hash_from_web_client.merge( token: auth_token)
+        project_creator = ProjectCreator.find_by_kickstarter_id(1134494596)
 
-        expect(test_actions).to change{ProjectCreator.count}.from(0).to(1)
-
-        project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
-        expected_attributes =  profile_data_from_project_search[:project_creator]
-        ['name', 'slug', 'kickstarter_id', 'avatar', 'url_web', 'url_api'].each do |attr|
-          expect(expected_attributes.values).to include(project_creator[attr])
+        expected_attributes.each do |attr|
+          puts "\nAttribute: #{attr} is missing a value" if project_creator[attr].nil?
+          expect(project_creator[attr]).not_to be_nil
         end
-      end
-
-      it 'adds profile information to db creators' do
-        post :create, profile_data_from_project_search.merge( token: auth_token)
-
-        project_creator = ProjectCreator.find_by_kickstarter_id(12345678)
-        expect(project_creator.bio).not_to be_nil
-        expect(project_creator.created_project_count).not_to be_nil
-        expect(project_creator.kickstarter_created_at).not_to be_nil
       end
     end
 
     context 'a user is NOT logged in' do
       it 'should require a user to be logged in' do
         starting_project_creator_count = ProjectCreator.count
-        response = post :create, profile_data_from_project_search
+        response = post :create, hash_from_web_client
         response_body = JSON.parse(response.body)
 
         expect(ProjectCreator.count).to eq starting_project_creator_count

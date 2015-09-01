@@ -18,11 +18,13 @@ describe KickstarterApiClient do
           [
               {
                   name: 'CoolMiniOrNot',
+                  kickstarter_id: 1134494596,
                   profile_url: coolmini_profile_url,
                   profile_avatar: 'https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0'
               },
               {
                   name: 'Michael Mindes',
+                  kickstarter_id: 121620721,
                   profile_url: 'https://api.kickstarter.com/v1/users/121620721?signature=1440625531.db17631ecab6ee8fde821616f3c7cb0c1c42b85f',
                   profile_avatar: 'https://ksr-ugc.imgix.net/avatars/315828/TMG_Logo_-_RGB_Final.original.png?v=1421102840&w=160&h=160&fit=crop&auto=format&q=92&s=1620667cc4109aa0d0b2cf49127a02ad'
               }
@@ -47,6 +49,12 @@ describe KickstarterApiClient do
 
       expect(creator).to eq(
         {
+           name: 'CoolMiniOrNot',
+           slug: 'coolminiornot',
+           kickstarter_id: 1134494596,
+           avatar: 'https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0',
+           url_web: 'https://www.kickstarter.com/profile/coolminiornot',
+           url_api: 'https://api.kickstarter.com/v1/users/1134494596?signature=1440596116.4a1058214fbacf8eec787edaeea9a646d1f5a351',
            bio: 'CoolMiniOrNot is both a studio and publisher of great tabletop games like Zombicide, Dark Age, Wrath of Kings, Rivet Wars, Kaosball, Dogs of War, Arcadia Quest, Xenoshyft and more! We work closely with game creators and indie studios to realize their vision, with a revenue sharing philosophy that is unprecedented in the industry.',
            created_project_count: 18,
            kickstarter_created_at: ks_created_date
