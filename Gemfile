@@ -14,6 +14,7 @@ gem 'pg'
 gem 'httparty'
 gem 'has_secure_token'
 gem 'bcrypt-ruby'
+gem 'rails_12factor'
 
 group :development, :test do
   gem 'byebug'
