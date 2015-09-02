@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>One or more Project Creators</h1>
+<p>
+  The following project creators have posted new projects:
+  <ul>
+  <% @project_creators.each do |project_creator| %>
+    <li><%= project_creator.name %></li>
+  <% end %>
+  </ul>
+</p>
+</body>
+</html>
