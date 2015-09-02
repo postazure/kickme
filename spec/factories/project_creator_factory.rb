@@ -11,7 +11,6 @@ FactoryGirl.define do
     after(:build) do |project_creator|
       project_creator.slug = project_creator.name.downcase
       project_creator.url_web = "https://www.kickstarter.com/profile/#{project_creator.slug}"
-      project_creator.url_api = "https://api.kickstarter.com/v1/users/#{project_creator.kickstarter_id}?signature=1440596030.895c964b7ab965d781eeee1b61425bc6f933747a"
     end
   end
 end
