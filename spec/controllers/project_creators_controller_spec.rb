@@ -104,7 +104,7 @@ describe ProjectCreatorsController do
         response_body = JSON.parse(response.body)
 
         expect(ProjectCreator.count).to eq starting_project_creator_count
-        expect(response_body.keys).to include( 'auth', 'message')
+        expect(response_body.keys).to include( 'message')
         expect(response.status).to eq 401
       end
     end

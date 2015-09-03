@@ -4,9 +4,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   def authenticate_user_token
-    provided_token = params['token'] || request.env['user_auth_token']
-    if User.find_by_token(provided_token).nil?
-      render json: { auth: false, message: 'You need to log in.' }, status: 401
-    end
+    render json: { message: 'Auth failed.' }, status: 401 unless User.find_by_token(params[:token])
   end
 end
