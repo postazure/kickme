@@ -15,7 +15,7 @@ describe AuthController do
         response_body = JSON.parse(response.body)
 
         token = (existing_user.reload).token
-        expect(response_body).to eq( { 'auth' => true, 'token' => token })
+        expect(response_body).to eq( { 'token' => token })
         expect(response.status).to eq 200
       end
     end
@@ -27,12 +27,9 @@ describe AuthController do
         }
       end
       
-      it 'should login and create a token' do
+      it 'should not login' do
         response = post :create, payload
-        response_body = JSON.parse(response.body)
-
         expect(response.status).to eq 401
-        expect(response_body).to eq( 'auth' => false )
       end
     end
   end
@@ -45,22 +42,16 @@ describe AuthController do
 
       it 'should ' do
         response = delete :destroy, { token: session_token }
-        response_body = JSON.parse(response.body)
 
         expect(logged_in_user.reload.token).to be_nil
         expect(response.status).to eq 200
-        expect(response_body).to eq( 'auth' => true )
       end
     end
 
     context 'invalid token' do
       it 'invalid token ' do
         response = delete :destroy, { token: 'foo' }
-        response_body = JSON.parse(response.body)
-
-        expect(logged_in_user.reload.token).not_to be_nil
-        expect(response.status).to eq 422
-        expect(response_body).to eq( 'auth' => false )
+        expect(response.status).to eq 200
       end
     end
   end

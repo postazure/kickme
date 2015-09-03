@@ -1,23 +1,21 @@
 class AuthController < ApplicationController
+  skip_before_action :authenticate_user_token, only: [:destroy]
   def create
     user = User.find_by_email(params['email'])
 
     if authenticated_user?(user)
       user.regenerate_token
-      token = user.token
-      render json: { auth: true, token: token }, status: 200
+      render json: { token: user.token}, status: 200
     else
-      render json: { auth: false }, status: 401
+      render nothing: true, status: 401
     end
   end
 
   def destroy
     user = User.find_by_token(params['token'])
-    user.update( token: nil )
+    user.update( token: nil ) if user
 
-    render json: { auth: true }
-  rescue
-      render json: { auth: false }, status: 422
+    render nothing: true, status: 200
   end
 
   private
