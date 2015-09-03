@@ -62,4 +62,34 @@ describe KickstarterApiClient do
       )
     end
   end
+
+  describe '#get_projects_by_creator_name' do
+    it 'should return a collection of projects' do
+      results = subject.get_projects_by_creator_name('coolminiornot')
+      expect(results).to include(
+         {
+             project_creator: {
+                 name: 'CoolMiniOrNot',
+                 kickstarter_id: 1134494596,
+                 profile_url: coolmini_profile_url,
+                 profile_avatar: 'https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0'
+             },
+             project: {
+                 name: 'CoolMiniOrNot Base System Featuring Micro Art Studio',
+                 blurb: 'Beautiful, affordable terrain bases for all your miniatures!',
+                 kickstarter_id: 1231771828,
+                 pledged: 88259,
+                 currency: 'USD',
+                 state: 'successful',
+                 end_at: '2014-10-05',
+                 start_at: '2014-09-19',
+                 image: 'https://ksr-ugc.imgix.net/projects/1238317/photo-original.jpg?v=1407799072&w=266&h=200&fit=crop&auto=format&q=92&s=e476c5d79b9da546b0a19d10a838cf70',
+                 url_rewards: 'https://www.kickstarter.com/projects/coolminiornot/coolminiornot-base-system-featuring-micro-art-stud/rewards',
+                 url_project: 'https://www.kickstarter.com/projects/coolminiornot/coolminiornot-base-system-featuring-micro-art-stud?ref=discovery'
+             }
+         }
+      )
+      expect(results.length).to eq 19
+    end
+  end
 end

@@ -20,6 +20,17 @@ class NewProjectFinder
     end
   end
 
+  def get_newest_projects_with_creator(n)
+    creators_with_projects = client.get_projects_by_creator_name(@project_creator.slug)
+
+    this_creators_projects = creators_with_projects.reject do |p|
+      p[:project_creator][:kickstarter_id] != @project_creator.kickstarter_id
+    end
+
+    sorted_projects = this_creators_projects.sort_by { |p| Date.parse(p[:project][:start_at]) }.reverse
+    sorted_projects[0...n]
+  end
+
   private
 
   def client
