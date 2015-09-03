@@ -3,7 +3,7 @@ require 'rails_helper'
 describe NewProjectFinder do
   describe '#new_project_count' do
     let( :project_count ) { 20 }
-    let( :new_project_count ) { project_count + 1 }
+    let( :new_project_count ) { project_count + 2 }
     let( :project_creator ) { FactoryGirl.build(:project_creator, kickstarter_id: 100, created_project_count: project_count) }
 
     before do
@@ -11,14 +11,14 @@ describe NewProjectFinder do
       project_creator.save!
     end
 
-    it 'should see if the project count changes for a project creator' do
+    it 'should return the number of new projects a creator posts' do
       finder = NewProjectFinder.new(project_creator)
-      expect(finder.new_project?).to be true
+      expect(finder.new_project_count).to eq 2
     end
 
     it 'should update the created project count' do
       finder = NewProjectFinder.new(project_creator)
-      finder.new_project?
+      finder.new_project_count
 
       expect(project_creator.reload.created_project_count).to eq new_project_count
     end

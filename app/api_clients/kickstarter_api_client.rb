@@ -2,7 +2,7 @@ class KickstarterApiClient
   PROJECT_SEARCH_URL='https://www.kickstarter.com/projects/search.json?term=' #+'coolminiornot'
 
   def search_project_creators_by_name(name)
-    projects = get_projects_by_name(name)
+    projects = get_projects_by_creator_name(name)
 
     creators = []
     projects.each do |project|
