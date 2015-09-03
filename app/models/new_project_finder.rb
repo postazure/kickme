@@ -2,7 +2,7 @@ class NewProjectFinder
   def self.find_creators_with_new_projects
     creators = ProjectCreator.all
     creators.map do |pc|
-      pc if self.new(pc).new_project?
+      pc if new(pc).new_project?
     end.compact
   end
 

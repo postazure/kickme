@@ -24,7 +24,7 @@ describe NewProjectFinder do
     end
   end
 
-  describe '.find_new_projects' do
+  describe '.find_creators_with_new_projects' do
     let!( :creators_with_new_projects ) do
       [
           FactoryGirl.create(:project_creator, created_project_count: 3, url_api: 'creator1_url'),
@@ -52,6 +52,10 @@ describe NewProjectFinder do
     it 'should return all project creators that have new projects' do
       creators = NewProjectFinder.find_creators_with_new_projects
       expect(creators).to match_array(creators_with_new_projects)
+    end
+
+    it 'should figure out what the new project is and return it with the creator' do
+      raise 'Make this test a reality'
     end
   end
 end
