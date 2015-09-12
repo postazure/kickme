@@ -72,5 +72,13 @@ describe UserNotifier do
       expect(UserNotifier.deliveries.first.subject).to eq "#{creator1.name} Posted A New Project"
       expect(UserNotifier.deliveries.first.from).to eq ['new_projects@mykickalerts.com']
     end
+
+    it 'should include the creators and their projects in the email' do
+      UserNotifier.send_new_project_email(notification).deliver_now
+      email_content = UserNotifier.deliveries.first.body.raw_source
+      expect(email_content).to include(user1.email)
+      expect(email_content).to include(creator1.name)
+      expect(email_content).to include('creator1 project')
+    end
   end
 end
