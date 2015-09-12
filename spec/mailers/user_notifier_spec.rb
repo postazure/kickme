@@ -37,17 +37,39 @@ describe UserNotifier do
   end
 
   describe 'send_new_project_email' do
-    let( :user1 ) { FactoryGirl.create(:user) }
+    let!( :user1 ) { FactoryGirl.create(:user) }
+    let!( :creator1 ) { FactoryGirl.create(:project_creator) }
 
-    let( :creator1 ) { FactoryGirl.create(:project_creator) }
-    let( :creator2 ) { FactoryGirl.create(:project_creator) }
+    let( :notification ) do
+      {
+          user: user1,
+          new_projects_by_creators: [
+              {
+                  creator: creator1,
+                  projects: [{
+                                 name: 'creator1 project',
+                                 blurb: 'foo',
+                                 kickstarter_id: 12,
+                                 pledged: 12,
+                                 currency: 'USD',
+                                 state: 'bar',
+                                 end_at: '2014-01-31',
+                                 start_at: '2014-01-01',
+                                 image: 'image',
+                                 url_rewards: 'rewards',
+                                 url_project: 'project'
+                             }]
+              }
+          ]
+      }
+    end
 
     it 'should notify users if project creators on the watch list add projects' do
-      UserNotifier.send_new_project_email(user1, [ creator1, creator2 ]).deliver_now
+      UserNotifier.send_new_project_email(notification).deliver_now
 
       expect(UserNotifier.deliveries.count).to eq 1
       expect(UserNotifier.deliveries.first.to).to eq [user1.email]
-      expect(UserNotifier.deliveries.first.subject).to eq "#{creator1.name} & #{creator2.name} Posted A New Project"
+      expect(UserNotifier.deliveries.first.subject).to eq "#{creator1.name} Posted A New Project"
       expect(UserNotifier.deliveries.first.from).to eq ['new_projects@mykickalerts.com']
     end
   end

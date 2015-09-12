@@ -8,14 +8,13 @@ class UserNotifier < ActionMailer::Base
           subject: "Thanks for signing up, #{@user.email}!")
   end
 
-  def send_new_project_email(user, project_creators)
-    @user = user
-    @project_creators = project_creators
+  def send_new_project_email(notification)
+    @user = notification[:user]
+    @new_projects_by_creators = notification[:new_projects_by_creators]
 
-    project_creators_for_subject = @project_creators.map(&:name).join(' & ')
     mail(
         to: @user.email,
-        subject: "#{project_creators_for_subject} Posted A New Project"
+        subject: "#{@new_projects_by_creators.first[:creator].name} Posted A New Project"
     )
   end
 end

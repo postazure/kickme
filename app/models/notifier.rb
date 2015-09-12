@@ -1,28 +1,47 @@
 class Notifier
-  def match_projects_and_users
-    project_creators = NewProjectFinder.find_creators_with_new_projects
-    results_hash = {}
-    project_creators.each do |creator|
-      set_user_as_root_of_projects(creator, results_hash)
+  def build_user_notification_list
+    creators_and_projects = NewProjectFinder.find_creators_with_new_projects
+
+    users_notification_info = []
+    creators_and_projects.each do |creator_info|
+
+      add_to_users_info(creator_info, users_notification_info)
     end
-    results_hash
+
+    users_notification_info
   end
 
   def notify_users
-    user_project_hash = match_projects_and_users
-    user_project_hash.each do |user, projects|
-      UserNotifier.send_new_project_email(user, projects).deliver_now
+    notification_info_list = build_user_notification_list
+    notification_info_list.each do |notification|
+      UserNotifier.send_new_project_email(notification).deliver_now
     end
   end
 
   private
 
-  def set_user_as_root_of_projects(creator, results_hash)
-    creator.users.each do |user|
-      if results_hash[user]
-        results_hash[user] << creator
+  def add_to_users_info(creator_info, users_notification_info)
+    project_creator = creator_info[:project_creator]
+    projects = creator_info[:new_projects]
+    project_creator_users = project_creator.users
+
+    project_creator_users.each do |user|
+      user_in_info = users_notification_info.find { |info| info[:user].id == user.id }
+      if user_in_info
+        user_in_info[:new_projects_by_creators] << {
+            creator: project_creator,
+            projects: projects
+        }
       else
-        results_hash[user] = [creator]
+        users_notification_info << {
+            user: user,
+            new_projects_by_creators: [
+                {
+                    creator: project_creator,
+                    projects: projects
+                }
+            ]
+        }
       end
     end
   end

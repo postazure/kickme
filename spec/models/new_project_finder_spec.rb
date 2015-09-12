@@ -1,6 +1,137 @@
 require 'rails_helper'
 
 describe NewProjectFinder do
+  describe '.find_creators_with_new_projects' do
+    let!( :creator1 ) { FactoryGirl.create(:project_creator, created_project_count: 1) }
+    let!( :creator2 ) { FactoryGirl.create(:project_creator, created_project_count: 1) }
+    let!( :creator3 ) { FactoryGirl.create(:project_creator, created_project_count: 1) }
+    let( :creator1_project ) do
+      {
+              name: 'The New Project',
+              blurb: 'It be new, buy it!',
+              kickstarter_id: 2231771828,
+              pledged: 88259,
+              currency: 'USD',
+              state: 'successful',
+              end_at: '2015-10-01',
+              start_at: '2015-08-01',
+              image: 'https://image',
+              url_rewards: 'https://www.rewards',
+              url_project: 'https://www.project'
+      }
+    end
+    let( :creator2_project1 ) do
+      {
+              name: 'creator2_project1',
+              blurb: 'It be new, buy it!',
+              kickstarter_id: 1771828,
+              pledged: 88259,
+              currency: 'USD',
+              state: 'successful',
+              end_at: '2015-10-01',
+              start_at: '2015-08-02',
+              image: 'https://image',
+              url_rewards: 'https://www.rewards',
+              url_project: 'https://www.project'
+      }
+    end
+    let( :creator2_project2 ) do
+      {
+              name: 'creator2_project2',
+              blurb: 'It be new, buy it!',
+              kickstarter_id: 2771828,
+              pledged: 88259,
+              currency: 'USD',
+              state: 'successful',
+              end_at: '2015-10-01',
+              start_at: '2015-08-01',
+              image: 'https://image',
+              url_rewards: 'https://www.rewards',
+              url_project: 'https://www.project'
+      }
+    end
+    let( :pc1_newest_return ) do
+      [
+          {
+              project_creator: {
+                  name: creator1.name,
+                  kickstarter_id: creator1.kickstarter_id,
+                  profile_url: creator1.url_api,
+                  profile_avatar: creator1.avatar
+              },
+              project: creator1_project
+          }
+      ]
+    end
+    let( :pc2_newest_return ) do
+      [
+          {
+              project_creator: {
+                  name: creator2.name,
+                  kickstarter_id: creator2.kickstarter_id,
+                  profile_url: creator2.url_api,
+                  profile_avatar: creator2.avatar
+              },
+              project: creator2_project1
+          },
+          {
+              project_creator: {
+                  name: creator2.name,
+                  kickstarter_id: creator2.kickstarter_id,
+                  profile_url: creator2.url_api,
+                  profile_avatar: creator2.avatar
+              },
+              project: creator2_project2
+          }
+      ]
+    end
+
+    before do
+      allow_any_instance_of(KickstarterApiClient)
+          .to receive(:get_creator_info_from_url)
+          .with(creator1.url_api)
+          .and_return(created_project_count: creator1.created_project_count + 1)
+      allow_any_instance_of(KickstarterApiClient)
+          .to receive(:get_creator_info_from_url)
+          .with(creator2.url_api)
+          .and_return(created_project_count: creator2.created_project_count + 2)
+      allow_any_instance_of(KickstarterApiClient)
+          .to receive(:get_creator_info_from_url)
+          .with(creator3.url_api)
+          .and_return(created_project_count: creator3.created_project_count + 0)
+
+      allow_any_instance_of(NewProjectFinder)
+          .to receive(:get_newest_projects_with_creator)
+          .with(1)
+          .and_return(pc1_newest_return)
+      allow_any_instance_of(NewProjectFinder)
+          .to receive(:get_newest_projects_with_creator)
+          .with(2)
+          .and_return(pc2_newest_return)
+    end
+
+    it 'should return all project creators that have new projects' do
+      creators = NewProjectFinder.find_creators_with_new_projects
+      expect(creators).to match_array(
+          [
+              {
+                  project_creator: creator1,
+                  new_projects: [creator1_project]
+              },
+              {
+                  project_creator: creator2,
+                  new_projects: [creator2_project1, creator2_project2]
+              }
+          ]
+      )
+    end
+
+    it 'should not include project creators that do not have new projects' do
+      creators = NewProjectFinder.find_creators_with_new_projects
+      expect(creators).not_to include(creator3)
+    end
+  end
+
   describe '#new_project_count' do
     let( :project_count ) { 20 }
     let( :new_project_count ) { project_count + 2 }
@@ -21,37 +152,6 @@ describe NewProjectFinder do
       finder.new_project_count
 
       expect(project_creator.reload.created_project_count).to eq new_project_count
-    end
-  end
-
-  describe '.find_creators_with_new_projects' do
-    let!( :creators_with_new_projects ) do
-      [
-          FactoryGirl.create(:project_creator, created_project_count: 3, url_api: 'creator1_url'),
-          FactoryGirl.create(:project_creator, created_project_count: 5, url_api: 'creator2_url')
-      ]
-    end
-
-    before do
-      allow_any_instance_of(KickstarterApiClient)
-          .to receive(:get_creator_info_from_url)
-                  .with('creator1_url')
-                  .and_return({ created_project_count: 4 })
-      allow_any_instance_of(KickstarterApiClient)
-          .to receive(:get_creator_info_from_url)
-                  .with('creator2_url')
-                  .and_return({ created_project_count: 6 })
-      allow_any_instance_of(KickstarterApiClient)
-          .to receive(:get_creator_info_from_url)
-                  .with('creator3_url')
-                  .and_return({ created_project_count: 7 })
-
-      FactoryGirl.create(:project_creator, created_project_count: 7, url_api: 'creator3_url')
-    end
-
-    it 'should return all project creators that have new projects' do
-      creators = NewProjectFinder.find_creators_with_new_projects
-      expect(creators).to match_array(creators_with_new_projects)
     end
   end
 
