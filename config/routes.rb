@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post 'login' => 'auth#create'
   delete 'logout/:token' => 'auth#destroy'
 
-  post 'user/:token/follow' => 'users#follow'
-  post 'user/:token/unfollow' => 'users#unfollow'
-  get 'users/:token/project_creators' => 'users#project_creators'
+  post 'user/follow' => 'users#follow'
+  post 'user/unfollow' => 'users#unfollow'
+  get 'user/project_creators' => 'users#project_creators'
 end
