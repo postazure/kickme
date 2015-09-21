@@ -6,4 +6,8 @@ class ApplicationController < ActionController::Base
   def authenticate_user_token
     render json: { message: 'Auth failed.' }, status: 401 unless User.find_by_token(params[:token])
   end
+
+  def client
+    @client ||= KickstarterApiClient.new
+  end
 end
