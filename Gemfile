@@ -14,6 +14,7 @@ gem 'pg'
 gem 'httparty'
 gem 'has_secure_token'
 gem 'bcrypt-ruby'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :production do
   gem 'rails_12factor'
