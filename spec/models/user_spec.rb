@@ -12,6 +12,12 @@ describe User do
 
       expect(test_actions).to change{user.project_creators.count}.from(0).to(1)
     end
+
+    it 'has no duplicate project_creators' do
+      2.times { user.project_creators << project_creator }
+
+      expect(user.project_creators.count).to eq 1
+    end
   end
 
   describe 'encrypt password' do
