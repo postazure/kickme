@@ -5,7 +5,7 @@ class AuthController < ApplicationController
 
     if authenticated_user?(user)
       user.regenerate_token
-      render json: { token: user.token}, status: 200
+      render json: { token: user.reload.token}, status: 200
     else
       render nothing: true, status: 401
     end
@@ -13,7 +13,7 @@ class AuthController < ApplicationController
 
   def destroy
     user = User.find_by_token(params['token'])
-    user.update( token: nil ) if user
+    user.regenerate_token if user
 
     render nothing: true, status: 200
   end

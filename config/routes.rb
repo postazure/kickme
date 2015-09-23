@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   post 'registrations' => 'registrations#create'
   post 'login' => 'auth#create'
-  delete 'logout/:token' => 'auth#destroy'
+  post 'logout/:token' => 'auth#destroy'
 
   post 'user/follow' => 'users#follow'
   post 'user/unfollow' => 'users#unfollow'

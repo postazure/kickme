@@ -20,6 +20,26 @@ describe User do
     end
   end
 
+  describe 'validations' do
+    let!( :user ) { FactoryGirl.create(:user, email: 'foo@bar.com') }
+    it 'should have a unique email' do
+      user_with_same_email = FactoryGirl.build(:user, email: 'foo@bar.com')
+      expect(User.count).to eq 1
+      user_with_same_email.save
+      expect(User.count).to eq 1
+    end
+
+    it 'should require an email address' do
+      user = FactoryGirl.build(:user, email: '')
+      expect{user.save!}.to raise_exception
+    end
+
+    it 'should require a password' do
+      user = FactoryGirl.build(:user, password: '')
+      expect{user.save!}.to raise_exception
+    end
+  end
+
   describe 'encrypt password' do
     let!( :user ) {User.create(email: 'foo@bar.com', password: 'password', password_confirmation: 'password')}
 

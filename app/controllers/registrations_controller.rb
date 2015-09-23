@@ -3,6 +3,8 @@ class RegistrationsController < ApplicationController
     user = User.new( user_params )
     if user.save
       render json: { registered: true, token: user.token }
+    else
+      render json: { errors: user.errors }, status: 422
     end
   end
 

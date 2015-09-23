@@ -40,10 +40,11 @@ describe AuthController do
     context 'valid token' do
       let( :session_token ) { logged_in_user.token }
 
-      it 'should ' do
-        response = delete :destroy, { token: session_token }
+      it 'should change the token' do
+        old_token = logged_in_user.token
+        response = post :destroy, { token: session_token }
 
-        expect(logged_in_user.reload.token).to be_nil
+        expect(logged_in_user.reload.token).not_to eq old_token
         expect(response.status).to eq 200
       end
     end
