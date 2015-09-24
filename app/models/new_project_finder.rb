@@ -10,6 +10,13 @@ class NewProjectFinder
     end.compact
   end
 
+  def self.update_creator_api_signatures
+    creators = ProjectCreator.all
+    creators.each do |creator|
+      creator.update_url_api
+    end
+  end
+
   private
   def self.match_creators_with_new_projects(db_pc, finder, num_of_new_projects)
     new_project_hashes = finder.get_newest_projects_with_creator(num_of_new_projects)

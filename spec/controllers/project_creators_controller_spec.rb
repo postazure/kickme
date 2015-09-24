@@ -73,7 +73,8 @@ describe ProjectCreatorsController do
                 name: 'CoolMiniOrNot',
                 kickstarter_id: kickstarter_id,
                 profile_avatar: 'https://avatar.com/coolminiornot',
-                url_api: profile_url
+                url_api: profile_url,
+                project: 'project foo'
             }
         }
     end
@@ -86,9 +87,11 @@ describe ProjectCreatorsController do
       let( :auth_token ) { user.token }
 
       it 'creates a project creator with profile information' do
-        expected_attributes = %w[ name slug kickstarter_id avatar url_web url_api bio created_project_count kickstarter_created_at ]
+        expected_attributes = %w[ name slug kickstarter_id avatar url_web url_api bio created_project_count kickstarter_created_at project ]
         post :create, hash_from_web_client.merge( token: auth_token)
         project_creator = ProjectCreator.find_by_kickstarter_id(1134494596)
+
+        expect(project_creator).not_to be nil
 
         expected_attributes.each do |attr|
           puts "\nAttribute: #{attr} is missing a value" if project_creator[attr].nil?

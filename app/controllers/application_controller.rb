@@ -10,4 +10,12 @@ class ApplicationController < ActionController::Base
   def client
     @client ||= KickstarterApiClient.new
   end
+
+  def find_or_create_project_creator(project_creator_params)
+    ProjectCreator
+        .create_with(project_creator_params)
+        .find_or_create_by(
+            kickstarter_id: project_creator_params[:kickstarter_id]
+        )
+  end
 end

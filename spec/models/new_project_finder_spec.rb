@@ -283,4 +283,27 @@ describe NewProjectFinder do
     end
 
   end
+
+  describe '.update_creator_api_signatures' do
+    let!( :project_creator ) { FactoryGirl.create(:project_creator) }
+
+    before do
+      allow_any_instance_of(KickstarterApiClient)
+          .to receive(:search_project_creators_by_name)
+          .with(project_creator.project)
+          .and_return(
+              [
+                  {
+                      kickstarter_id: project_creator.kickstarter_id,
+                      profile_url: 'url with valid signature'
+                  }
+              ]
+          )
+    end
+
+    it 'should find the new user link for the creator' do
+      NewProjectFinder.update_creator_api_signatures
+      expect(project_creator.reload.url_api).to eq 'url with valid signature'
+    end
+  end
 end

@@ -6,7 +6,8 @@ FactoryGirl.define do
     bio 'This is a really good project creator, and they did great things, so back their projects.'
     created_project_count {rand(3..15)}
     kickstarter_created_at {1.year.ago.in_time_zone('Pacific Time (US & Canada)')}
-    sequence(:url_api) {|n| "https://need-a-api-url-for-tests.com/#{n}"}
+    sequence(:url_api) { |n| "https://need-a-api-url-for-tests.com/#{n}"}
+    sequence(:project) { |n| "FactoryProject#{n}" }
 
     after(:build) do |project_creator|
       project_creator.slug = project_creator.name.downcase

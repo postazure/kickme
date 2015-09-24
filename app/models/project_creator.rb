@@ -19,6 +19,7 @@
 class ProjectCreator < ActiveRecord::Base
   has_and_belongs_to_many :users
 
+  validates_presence_of :project
 
   def kickstarter_api_client
     @kickstater_api_client ||= KickstarterApiClient.new
@@ -38,5 +39,13 @@ class ProjectCreator < ActiveRecord::Base
         'created_project_count' => created_project_count,
         'kickstarter_created_at' => kickstarter_created_at.strftime('%m-%d-%Y')
     }
+  end
+
+  def update_url_api
+    recent_project = self.project
+    project_creator_hash = kickstarter_api_client
+                          .search_project_creators_by_name(recent_project)
+                          .find {|pc| kickstarter_id == pc[:kickstarter_id]}
+    self.update(url_api: project_creator_hash[:profile_url])
   end
 end

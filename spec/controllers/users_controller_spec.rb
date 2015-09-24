@@ -22,28 +22,14 @@ describe UsersController do
   end
 
   describe '#follow' do
-    context 'when a project creator exists in the DB' do
-      it 'should add a project creator to the user\'s watch list' do
-        expect(user.project_creators.count).to eq 0
-
-        response = post :follow, payload.merge(token: user.token)
-        body = JSON.parse(response.body)
-
-        expect_normal_status(response)
-        expect(body['follow']).to eq true
-        expect(user.project_creators.count).to eq 1
-        expect(user.project_creators.first.name).to eq project_creator.name
-      end
-    end
-
-    context 'when a project creator does NOT exists in the DB' do
       let( :new_project_creator ) do
         {
             project_creator: {
                 kickstarter_id: 4242,
                 name: 'foobar',
                 profile_avatar: 'http://avatar',
-                profile_url: 'http://profile'
+                profile_url: 'http://profile',
+                project: 'a project'
             }
         }
       end
@@ -68,7 +54,6 @@ describe UsersController do
         expect(user.project_creators.count).to eq 1
         expect(user.project_creators.last.bio).to eq 'CoolMiniOrNot is both a studio and publisher of great tabletop games like Zombicide, Dark Age, Wrath of Kings, Rivet Wars, Kaosball, Dogs of War, Arcadia Quest, Xenoshyft and more! We work closely with game creators and indie studios to realize their vision, with a revenue sharing philosophy that is unprecedented in the industry.'
       end
-    end
   end
 
 

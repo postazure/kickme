@@ -2,19 +2,19 @@ class UsersController < ApplicationController
   before_action :authenticate_user_token
 
   def follow
-    if project_creator
-      user.project_creators << project_creator
+    profile_url = params['project_creator']['profile_url']
+    creator_hash = client.get_creator_info_from_url(profile_url)
+    project = params['project_creator']['project']
+    project_creator_params =  creator_hash.merge(project: project)
+
+    creator = find_or_create_project_creator(project_creator_params)
+    user.project_creators << creator
+    if creator
       render json: { follow: true }
     else
-      project_creator_hash = client.get_creator_info_from_url(profile_url)
-      new_creator = ProjectCreator.create(project_creator_hash)
-      if new_creator
-        user.project_creators << new_creator
-        render json: { follow: true }
-      else
-        render json: { follow: false }
-      end
+      render json: { follow: false}
     end
+
   end
 
   def unfollow
