@@ -1,5 +1,6 @@
 class NewProjectFinder
   def self.find_creators_with_new_projects
+    update_creator_api_signatures
     creators = ProjectCreator.all
     creators.map do |db_pc|
       finder = new(db_pc)
