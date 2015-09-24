@@ -1,5 +1,6 @@
 class Notifier
   def build_user_notification_list
+    NewProjectFinder.update_creator_api_signatures
     creators_and_projects = NewProjectFinder.find_creators_with_new_projects
 
     users_notification_info = []

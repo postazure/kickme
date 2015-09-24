@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe Notifier do
+  before do
+    allow(NewProjectFinder).to receive(:update_creator_api_signatures)
+  end
+
   describe '#build_user_notification_list' do
     let!( :user1 ) { FactoryGirl.create(:user) }
     let!( :creator1 ) { FactoryGirl.create(:project_creator) }
