@@ -12,11 +12,12 @@ class KickstarterApiClient
           name: project_creator_hash[:name],
           kickstarter_id: project_creator_hash[:kickstarter_id],
           profile_url: project_creator_hash[:profile_url],
-          profile_avatar: project_creator_hash[:profile_avatar]
+          profile_avatar: project_creator_hash[:profile_avatar],
+          project: project[:project][:name]
         }
       )
     end
-    creators.uniq
+    creators.uniq {|c| c[:kickstarter_id]}
   end
 
   def get_projects_by_creator_name(name)

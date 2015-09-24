@@ -20,13 +20,15 @@ describe KickstarterApiClient do
                   name: 'CoolMiniOrNot',
                   kickstarter_id: 1134494596,
                   profile_url: coolmini_profile_url,
-                  profile_avatar: 'https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0'
+                  profile_avatar: 'https://ksr-ugc.imgix.net/avatars/2326978/cmonlogo250.original.jpg?v=1393237255&w=160&h=160&fit=crop&auto=format&q=92&s=2c5c6b48023bb7a10fc81381eb776dc0',
+                  project: 'CoolMiniOrNot Base System Featuring Micro Art Studio'
               },
               {
                   name: 'Michael Mindes',
                   kickstarter_id: 121620721,
                   profile_url: 'https://api.kickstarter.com/v1/users/121620721?signature=1440625531.db17631ecab6ee8fde821616f3c7cb0c1c42b85f',
-                  profile_avatar: 'https://ksr-ugc.imgix.net/avatars/315828/TMG_Logo_-_RGB_Final.original.png?v=1421102840&w=160&h=160&fit=crop&auto=format&q=92&s=1620667cc4109aa0d0b2cf49127a02ad'
+                  profile_avatar: 'https://ksr-ugc.imgix.net/avatars/315828/TMG_Logo_-_RGB_Final.original.png?v=1421102840&w=160&h=160&fit=crop&auto=format&q=92&s=1620667cc4109aa0d0b2cf49127a02ad',
+                  project: 'Eminent Domain: MICROCOSM + TMG Promos'
               }
           ]
       )

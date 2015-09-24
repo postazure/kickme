@@ -29,13 +29,15 @@ describe ProjectCreatorsController do
                   name: 'CoolMiniOrNot',
                   kickstarter_id: 123456,
                   profile_url: 'https://profile.com/coolminiornot',
-                  profile_avatar: 'https://avatar.com/coolminiornot'
+                  profile_avatar: 'https://avatar.com/coolminiornot',
+                  project: 'cool project'
               },
               {
                   name: 'Michael Mindes',
                   kickstarter_id: 654321,
                   profile_url: 'https://profile.com/michaelmindes',
-                  profile_avatar: 'https://avatar.com/michaelmindes'
+                  profile_avatar: 'https://avatar.com/michaelmindes',
+                  project: 'tmg project'
               },
           ]
         }
@@ -50,13 +52,15 @@ describe ProjectCreatorsController do
               'name' => 'CoolMiniOrNot',
               'kickstarter_id' => 123456,
               'profile_url' => 'https://profile.com/coolminiornot',
-              'profile_avatar' => 'https://avatar.com/coolminiornot'
+              'profile_avatar' => 'https://avatar.com/coolminiornot',
+              'project' => 'cool project'
           },
           {
               'name' => 'Michael Mindes',
               'kickstarter_id' => 654321,
               'profile_url' => 'https://profile.com/michaelmindes',
-              'profile_avatar' => 'https://avatar.com/michaelmindes'
+              'profile_avatar' => 'https://avatar.com/michaelmindes',
+              'project' => 'tmg project'
 
           }
         ]
